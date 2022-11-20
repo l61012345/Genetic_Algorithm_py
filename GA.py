@@ -15,16 +15,24 @@ def initia_population(population_size: 'int>0',
 
 
 def translation(population,
-                gene_length: 'int>0'):
+                gene_pattern):
 # translate the genes into decimal value
     population_trans = [[]]
     for i in range(len(population)):
         indiv_trans = []
-        for j in range(len(population[i])):
-            gene_trans = population[i][j]*(math.pow(2,j)) # 如何几个一组求幂
+        gene_trans = 0
+        for k in range(len(gene_pattern)):
+            gene_trans = gene_trans + int(''.join(str(population[i][l])for l in range(gene_pattern[k])),2)
             indiv_trans.append(gene_trans)
         population_trans.append(indiv_trans)
     return population_trans
+
+
+# def evaluation(population, 
+#                fitness_func):
+
+# def selection():
+
 
 
 def single_crossover(population,
@@ -66,9 +74,12 @@ def mutation(population,
 
 
 # testing
-m = initia_population(4, 10)
+m = initia_population(1, 10)
 print(m)
-m_d = single_crossover(m,0.9)
+#m_d = single_crossover(m,0.9)
+#print('--')
+#print(m_d)
 print('--')
-print(m_d)
+m_c = translation(m,[4,2])
+print(m_c)
         
