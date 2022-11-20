@@ -1,8 +1,8 @@
 import math
 import random
 
-def initia_population(population_size, chromosome_length):
-# initialize the population
+def initia_population(population_size: 'int>0', 
+                      chromosome_length: 'int>0'):
     population = [[]]
     for i in range(population_size):
         indiv = []
@@ -13,7 +13,9 @@ def initia_population(population_size, chromosome_length):
     return population[1:]
 
 
-def translation(population,gene_length):
+
+def translation(population,
+                gene_length: 'int>0'):
 # translate the genes into decimal value
     population_trans = [[]]
     for i in range(len(population)):
@@ -23,14 +25,16 @@ def translation(population,gene_length):
             indiv_trans.append(gene_trans)
         population_trans.append(indiv_trans)
     return population_trans
-           
-           
-def single_crossover(population,crossover_rate):
+
+
+def single_crossover(population,
+                     crossover_rate: '0<= float<= 1'):
     chromesome_length = len(population[0])
+    population_size = len(population)
     random.shuffle(population)
-    for i in range(0,len(population)-1,2):
+    for i in range(0,population_size-1,2):
         if random.random()< crossover_rate:
-            cross_point=random.randint(0,chromesome_length) # random generate the crossover point
+            cross_point=random.randint(0,chromesome_length-1) # random generate the crossover point
             parent1=[]
             parent2=[]
             parent1.extend(population[i][0:cross_point])
@@ -46,8 +50,23 @@ def single_crossover(population,crossover_rate):
     return population
 
 
+def mutation(population,
+             mutation_rate: '0<= float<= 1'):
+    population_size = len(population)
+    chromesome_length = len(population[0])
+    for i in range(population_size-1):
+        if random.random()< mutation_rate:
+            mutation_point=random.randint(0,chromesome_length-1)
+            if population[i][mutation_point]==1:
+                population[i][mutation_point]=0
+            else:
+                population[i][mutation_point]=1
+        else:
+            population[i]=population[i]
+
+
 # testing
-m = initia_population(2, 10)
+m = initia_population(4, 10)
 print(m)
 m_d = single_crossover(m,0.9)
 print('--')
