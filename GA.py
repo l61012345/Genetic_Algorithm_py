@@ -31,6 +31,7 @@ def translation(population,
 # def evaluation(population, 
 #                fitness_func):
 
+
 # def selection():
 
 
@@ -41,13 +42,14 @@ def single_crossover(population,
     population_size = len(population)
     random.shuffle(population)
     for i in range(0,population_size-1,2):
-        if random.random()< crossover_rate:
-            cross_point=random.randint(0,chromesome_length-1) # random generate the crossover point
+        if random.random()< crossover_rate: # check each indiv with crossover rate
+            cross_point=random.randint(0,chromesome_length-1) # random select the crossover point
             parent1=[]
             parent2=[]
+            # for parent1, it combind with 0-cp for (i)th indiv and cp-final for (i+1)th indiv
             parent1.extend(population[i][0:cross_point])
             parent1.extend(population[i+1][cross_point:chromesome_length])
-            
+            # for parent2, it combind with 0-cp for (i+1)th indiv and cp-final for (i)th indiv
             parent2.extend(population[i+1][0:cross_point])
             parent2.extend(population[i][cross_point:chromesome_length])
             population[i]=parent1
@@ -63,11 +65,13 @@ def mutation(population,
     population_size = len(population)
     chromesome_length = len(population[0])
     for i in range(population_size-1):
-        if random.random()< mutation_rate:
-            mutation_point=random.randint(0,chromesome_length-1)
+        if random.random()< mutation_rate: # chech each indiv with mutation rate
+            mutation_point=random.randint(0,chromesome_length-1) # random select the mutation point
+            # if this element is 1, then change to be 0.
             if population[i][mutation_point]==1:
                 population[i][mutation_point]=0
             else:
+            # if this element is 0, then change to be 1.
                 population[i][mutation_point]=1
         else:
             population[i]=population[i]
