@@ -134,27 +134,10 @@ def mutation(population,
                 population[i][mutation_point]=1
             print('---after mutation---')
             print('indiv:',i,'   chromosome:',population[i],'   mutated: yes')
+            print('========')
         else:
             population[i]=population[i]
             print('indiv:',i,'   chromosome:',population[i],'   mutated: not')
+            print('========')
     return population
-
-
-# testing
-m = initia_population(20, 10)
-print(m)
-print('--')
-m_d = single_crossover(m,0.6)
-print(m_d)
-print('--')
-m_c = translation(m,[2,4,10])
-print(m_c)
-        
-print('--')
-m_f = evaluation(m_c)
-print(m_f)
-
-print('--')
-m_m = mutation(m,0.7)
-print(m_m)
     

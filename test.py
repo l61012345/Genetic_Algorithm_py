@@ -1,16 +1,18 @@
-m=[0,1,2,3,4,5]
-print(len(m)-1)
-for i in range(0,len(m)-1,2):
-    print(m[i])
+import GA
+# testing
+m = GA.initia_population(20, 10)
+print(m)
+print('--')
+m_d = GA.single_crossover(m,0.6)
+print(m_d)
+print('--')
+m_c = GA.translation(m,[2,4,10])
+print(m_c)
+        
+print('--')
+m_f = GA.evaluation(m_c)
+print(m_f)
 
-
-print("---")
-n=[0,1,0,0,1,0,1]
-ge=[2,4,7]
-c = []
-for k in range(len(ge)):
-    c.append(''.join(str(n[l]) for l in range(ge[k-1],ge[k])))
-c[0]=''.join(str(n[l]) for l in range(ge[0]))
-print(c)
-
-
+print('--')
+m_m = GA.mutation(m,0.7)
+print(m_m)
