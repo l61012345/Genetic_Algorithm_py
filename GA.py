@@ -40,6 +40,7 @@ def translation(population,
     return population_trans[1:]
 
 
+
 def evaluation(population, 
                 fitness_func):
 # def 能不能输入一个函数
@@ -102,3 +103,12 @@ print('--')
 m_c = translation(m,[2,4,10])
 print(m_c)
         
+
+def evaluation(population_tran,fitness_func):
+# [[0, 2, 58], [2, 2, 62], [2, 3, 36], [0, 3, 23]]
+    import fitness_func
+    for i in range(len(population_tran)):
+       fitness = fitness_func(population_tran[i])
+   
+    
+
