@@ -46,13 +46,18 @@ def translation(population,
 
 
 def evaluation(population_tran):
-    from fitness_func import fitness_func
+    from fitness_func import fitness_func as fitness_func
     # load */fitness_func.py
     fitness = []
+    fitness_avg = []
     for i in range(len(population_tran)):
        indiv_fitness = fitness_func(population_tran[i]) # calculate fitness function for each indiv
        fitness.append(indiv_fitness) # obtain the fitness list
-    return fitness
+       
+    avg_fitness = sum(fitness)/len(fitness) # calculate avg fitness
+    for j in range(len(fitness)):
+        fitness_avg.append(fitness[j]/avg_fitness) # normalized fitness
+    return fitness_avg
 
 
 def selection(population,fitness):
