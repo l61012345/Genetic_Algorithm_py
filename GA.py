@@ -17,15 +17,27 @@ def initia_population(population_size: 'int>0',
 def translation(population,
                 gene_pattern):
 # translate the genes into decimal value
+# gene_pattern is an array consisting the sequence number of breakpoint for each gene
+# sequence numbered as: [1,2,3,4,....]
+# i.e., gene_pattern=[2,6] will regard as: #1-#2 as a gene string, #3-#6 as another gene string
+
     population_trans = [[]]
+    string = []
     for i in range(len(population)):
         indiv_trans = []
         gene_trans = 0
         for k in range(len(gene_pattern)):
-            gene_trans = gene_trans + int(''.join(str(population[i][l])for l in range(gene_pattern[k])),2)
-            indiv_trans.append(gene_trans)
-        population_trans.append(indiv_trans)
-    return population_trans
+            # divide corrsponding bits as a string of gene
+            string.append(''.join(str(population[i][l]) for l in range(gene_pattern[k-1],gene_pattern[k])))
+        # the 1st gene string
+        string[0] = ''.join(str(population[i][l]) for l in range(gene_pattern[0]))
+    print(string)
+    # convert each string of gene to each decimal value of gene
+    for m in range(len(string)):
+        gene_trans = int(string[m],2)
+        indiv_trans.append(gene_trans)
+    population_trans.append(indiv_trans)
+    return population_trans[1:]
 
 
 # def evaluation(population, 
@@ -84,6 +96,6 @@ print(m)
 #print('--')
 #print(m_d)
 print('--')
-m_c = translation(m,[4,2])
+m_c = translation(m,[2,4,10])
 print(m_c)
         
