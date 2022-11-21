@@ -12,3 +12,5 @@ for k in range(len(ge)):
     c.append(''.join(str(n[l]) for l in range(ge[k-1],ge[k])))
 c[0]=''.join(str(n[l]) for l in range(ge[0]))
 print(c)
+
+

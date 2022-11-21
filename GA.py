@@ -1,6 +1,7 @@
 import math
 import random
 
+
 def initia_population(population_size: 'int>0', 
                       chromosome_length: 'int>0'):
     population = [[]]
@@ -28,7 +29,9 @@ def translation(population,
         gene_trans = 0
         for k in range(len(gene_pattern)):
             # divide corrsponding bits as a string of gene
-            string.append(''.join(str(population[i][l]) for l in range(gene_pattern[k-1],gene_pattern[k])))
+            # string.append(''.join(str(population[i][l]) for l in range(gene_pattern[k-1],gene_pattern[k])))
+            string.append((''.join(str(population[i][gene_pattern[k-1]:gene_pattern[k]])))
+                          .replace('[', '').replace(']', '').replace(',', '').replace(' ', ''))
         # the 1st gene string
         string[0] = ''.join(str(population[i][l]) for l in range(gene_pattern[0]))
         print(string)
@@ -40,15 +43,19 @@ def translation(population,
     return population_trans[1:]
 
 
-
-def evaluation(population, 
-                fitness_func):
-# def 能不能输入一个函数
-
+def evaluation(population_tran):
+    from fitness_func import fitness_func
+    # load */fitness_func.py
+    fitness = []
+    for i in range(len(population_tran)):
+       indiv_fitness = fitness_func(population_tran[i]) # calculate fitness function for each indiv
+       fitness.append(indiv_fitness) # obtain the fitness list
     return fitness
 
 
-# def selection():
+def selection(population,fitness):
+    
+    return population_selected
 
 
 
@@ -103,12 +110,9 @@ print('--')
 m_c = translation(m,[2,4,10])
 print(m_c)
         
+print('--')
+m_f = evaluation(m_c)
+print(m_f)
 
-def evaluation(population_tran,fitness_func):
-# [[0, 2, 58], [2, 2, 62], [2, 3, 36], [0, 3, 23]]
-    import fitness_func
-    for i in range(len(population_tran)):
-       fitness = fitness_func(population_tran[i])
-   
+
     
-
