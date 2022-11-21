@@ -29,11 +29,13 @@ def translation(population,
         gene_trans = 0
         for k in range(len(gene_pattern)):
             # divide corrsponding bits as a string of gene
+            # pattern：'[0 , 1]'
             # string.append(''.join(str(population[i][l]) for l in range(gene_pattern[k-1],gene_pattern[k])))
             string.append((''.join(str(population[i][gene_pattern[k-1]:gene_pattern[k]])))
                           .replace('[', '').replace(']', '').replace(',', '').replace(' ', ''))
         # the 1st gene string
-        string[0] = ''.join(str(population[i][l]) for l in range(gene_pattern[0]))
+        string[0] = ''.join(str(population[i][0:gene_pattern[0]])
+                            .replace('[', '').replace(']', '').replace(',', '').replace(' ', ''))
         print(string)
          # convert each string of gene to each decimal value of gene
         for m in range(len(string)):
@@ -54,7 +56,10 @@ def evaluation(population_tran):
 
 
 def selection(population,fitness):
-    
+    population_selected = [[]]
+    total_fitness = sum(fitness)
+    for i in range(len(population)):
+        i =1
     return population_selected
 
 
