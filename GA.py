@@ -46,17 +46,23 @@ def translation(population,
 
 
 def evaluation(population_tran):
-    from fitness_func import fitness_func as fitness_func
-    # load */fitness_func.py
+    print('evaluation')
+    from fitness_func import fitness_func as fitness_func # load */fitness_func.py
+    print('successfully load fitness function ')
+
     fitness = []
     fitness_avg = []
     for i in range(len(population_tran)):
        indiv_fitness = fitness_func(population_tran[i]) # calculate fitness function for each indiv
+       print('indiv:',i,'   fitness:',indiv_fitness)
        fitness.append(indiv_fitness) # obtain the fitness list
 
     avg_fitness = sum(fitness)/len(fitness) # calculate avg fitness
+    print('average fitness:',avg_fitness)
     for j in range(len(fitness)):
-        fitness_avg.append(fitness[j]/avg_fitness) # normalized fitness
+        indiv_fitness_avg = fitness[j]/avg_fitness # normalized fitness
+        print('indiv:',j, '   normal fitness:',indiv_fitness_avg)
+        fitness_avg.append(indiv_fitness_avg) 
     return fitness_avg
 
 
@@ -97,9 +103,11 @@ def mutation(population,
              mutation_rate: '0<= float<= 1'):
     population_size = len(population)
     chromesome_length = len(population[0])
-    for i in range(population_size-1):
+    print('mutation')
+    for i in range(population_size):
         if random.random()< mutation_rate: # chech each indiv with mutation rate
             mutation_point=random.randint(0,chromesome_length-1) # random select the mutation point
+            print('indiv:',i,'   mutated: yes')
             # if this element is 1, then change to be 0.
             if population[i][mutation_point]==1:
                 population[i][mutation_point]=0
@@ -108,6 +116,8 @@ def mutation(population,
                 population[i][mutation_point]=1
         else:
             population[i]=population[i]
+            print('indiv:',i,'   mutated: not')
+    return population
 
 
 # testing
@@ -124,5 +134,7 @@ print('--')
 m_f = evaluation(m_c)
 print(m_f)
 
-
+print('--')
+m_m = mutation(m,0.7)
+print(m_m)
     
