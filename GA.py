@@ -17,31 +17,34 @@ def initia_population(population_size: 'int>0',
 def translation(population,
                 gene_pattern):
 # translate the genes into decimal value
+# population [[0,1,0,1,0],[1,0,1,1,1],..]
 # gene_pattern is an array consisting the sequence number of breakpoint for each gene
 # sequence numbered as: [1,2,3,4,....]
 # i.e., gene_pattern=[2,6] will regard as: #1-#2 as a gene string, #3-#6 as another gene string
-
     population_trans = [[]]
-    string = []
     for i in range(len(population)):
         indiv_trans = []
+        string = []
         gene_trans = 0
         for k in range(len(gene_pattern)):
             # divide corrsponding bits as a string of gene
             string.append(''.join(str(population[i][l]) for l in range(gene_pattern[k-1],gene_pattern[k])))
         # the 1st gene string
         string[0] = ''.join(str(population[i][l]) for l in range(gene_pattern[0]))
-    print(string)
-    # convert each string of gene to each decimal value of gene
-    for m in range(len(string)):
-        gene_trans = int(string[m],2)
-        indiv_trans.append(gene_trans)
-    population_trans.append(indiv_trans)
+        print(string)
+         # convert each string of gene to each decimal value of gene
+        for m in range(len(string)):
+            gene_trans = int(string[m],2)
+            indiv_trans.append(gene_trans)
+        population_trans.append(indiv_trans)
     return population_trans[1:]
 
 
-# def evaluation(population, 
-#                fitness_func):
+def evaluation(population, 
+                fitness_func):
+# def 能不能输入一个函数
+
+    return fitness
 
 
 # def selection():
@@ -90,7 +93,7 @@ def mutation(population,
 
 
 # testing
-m = initia_population(1, 10)
+m = initia_population(4, 10)
 print(m)
 #m_d = single_crossover(m,0.9)
 #print('--')
