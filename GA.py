@@ -18,15 +18,17 @@ def initia_population(population_size: 'int>0',
 
 
 
-def translation(population,
-                gene_pattern):
-# translate the genes into decimal value
-# population [[0,1,0,1,0],[1,0,1,1,1],..]
-# gene_pattern is an array consisting the sequence number of breakpoint for each gene
-# sequence numbered as: [1,2,3,4,....]
-# i.e., gene_pattern=[2,6] will regard as: #1-#2 as a gene string, #3-#6 as another gene string
-    print('translation')
+def translation(population:'list',
+                gene_pattern:'list'):
+    '''
+    translate the genes into decimal value
+    # population [[0,1,0,1,0],[1,0,1,1,1],..]
+    # gene_pattern is an array consisting the sequence number of breakpoint for each gene
+    # sequence numbered as: [1,2,3,4,....]
+    # i.e., gene_pattern=[2,6] will regard as: #1-#2 as a gene string, #3-#6 as another gene string
+    '''
     population_trans = [[]]
+    print('translation')
     for i in range(len(population)):
         indiv_trans = []
         string = []
@@ -50,13 +52,13 @@ def translation(population,
     return population_trans[1:]
 
 
-def evaluation(population_tran):
+def evaluation(population_tran:'list') ->[list,float]:
     print('evaluation')
     from fitness_func import fitness_func as fitness_func # load */fitness_func.py
     print('successfully load fitness function ')
 
     fitness = []
-    fitness_avg = []
+    fitness_norm = []
     for i in range(len(population_tran)):
        indiv_fitness = fitness_func(population_tran[i]) # calculate fitness function for each indiv
        print('indiv:',i,'   fitness:',indiv_fitness)
@@ -64,23 +66,38 @@ def evaluation(population_tran):
 
     avg_fitness = sum(fitness)/len(fitness) # calculate avg fitness
     print('average fitness:',avg_fitness)
+
     for j in range(len(fitness)):
-        indiv_fitness_avg = fitness[j]/avg_fitness # normalized fitness
-        print('indiv:',j, '   normal fitness:',indiv_fitness_avg)
-        fitness_avg.append(indiv_fitness_avg) 
-    return fitness_avg
+        indiv_fitness_norm = fitness[j]/avg_fitness # normalized fitness
+        print('indiv:',j, '   normal fitness:',indiv_fitness_norm)
+        fitness_norm.append(indiv_fitness_norm) 
+    return fitness_norm, avg_fitness
 
 
-def selection(population,fitness):
-    population_selected = [[]]
-    total_fitness = sum(fitness)
+def selection(population:'list',
+              fitness_norm:'list'):
+    population_inter = [[]]
+    
+    print('selection')
+
     for i in range(len(population)):
-        i =1
-    return population_selected
+        # based on the integer part of the fitness, copy to the intermediate population
+        copy_times = 0
+        for j in range(int(fitness_norm[i])):
+            population_inter.append(population[i])
+            copy_times = copy_times + 1
+            print('indiv:*',i,'   normal fitness:',fitness_norm[i],'   Copy times:',copy_times)
+        # based on the fraction part of the fitness, extra chance of production
+        if random.random() < (fitness_norm[i]-int(fitness_norm[i])):
+            population_inter.append(population[i])
+            copy_times = copy_times + 1
+            print('indiv:*',i,'   normal fitness:',fitness_norm[i],'   Copy times:',copy_times,'   extra')
+        else:
+            print('indiv:*',i,'   normal fitness:',fitness_norm[i],'   No extra copy')
+    return population_inter[1:]
 
 
-
-def single_crossover(population,
+def single_crossover(population:'list',
                      crossover_rate: '0<= float<= 1'):
     chromesome_length = len(population[0])
     population_size = len(population)
@@ -117,7 +134,7 @@ def single_crossover(population,
     return population
 
 
-def mutation(population,
+def mutation(population:'list',
              mutation_rate: '0<= float<= 1'):
     population_size = len(population)
     chromesome_length = len(population[0])
@@ -140,4 +157,3 @@ def mutation(population,
             print('indiv:',i,'   chromosome:',population[i],'   mutated: not')
             print('========')
     return population
-    
