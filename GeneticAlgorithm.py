@@ -1,5 +1,6 @@
 import math
 import random
+import sys
 
 
 def initia_population(population_size: 'int>0', chromosome_length: 'int>0'):
