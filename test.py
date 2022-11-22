@@ -1,4 +1,4 @@
-import GA
+import GeneticAlgorithm as GA
 # testing
 m = GA.initia_population(20, 10)
 print(m)
