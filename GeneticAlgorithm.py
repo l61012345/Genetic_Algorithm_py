@@ -1,6 +1,5 @@
 import math
 import random
-import sys
 
 
 def initia_population(population_size: 'int>0',
@@ -82,6 +81,10 @@ def evaluation(population_tran: 'list') -> ['list', 'float']:
     Return:
     fitness_norm - list
     avg_fitness - float
+    
+    Notice:
+    fitness function should be written and stored as: 
+    "fitness_func.py" in the same folder with this program
     '''
     print('evaluation')
     from fitness_func import fitness_func as fitness_func  # load */fitness_func.py

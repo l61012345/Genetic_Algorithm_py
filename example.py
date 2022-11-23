@@ -26,6 +26,7 @@ print('=============================')
 print('epoches:   ', epoches)
 print('max fitness:   ', max(fitness))
 print('winners:')
-print(m)
+for i in range(len(m)):
+    print('indiv:   ',i,'   chromosome:',m[i])
 plt.plot(fitness)
 plt.show()
