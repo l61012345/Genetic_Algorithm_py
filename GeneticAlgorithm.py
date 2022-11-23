@@ -94,7 +94,7 @@ def evaluation(population_tran: 'list') -> [list, float]:
         print('indiv:', i, '   fitness:', indiv_fitness)
         fitness.append(indiv_fitness)  # obtain the fitness list
 
-    avg_fitness = sum(fitness) / len(fitness)  # calculate avg fitness
+    avg_fitness = sum(fitness) / float(len(fitness))  # calculate avg fitness
     print('average fitness:', avg_fitness)
 
     for j in range(len(fitness)):
@@ -150,53 +150,60 @@ def single_crossover(population: 'list', crossover_rate: '0<= float<= 1'):
 
     Return:
     population - two dimension list
+    True or False - bool value
+                    if there is only one indiv in current population, the function will return False
+                    otherwise, it will return True
     '''
     chromesome_length = len(population[0])
     population_size = len(population)
-    print('single crossover   crossover rate:', crossover_rate)
+    if population_size == 1: # check whether there is only one indiv in the population
+        print('【Warning】only one indiv in current population')
+        return population, False
+    else:
+        print('single crossover   crossover rate:', crossover_rate)
 
-    random.shuffle(population)
-    print('shuffle')
+        random.shuffle(population)
+        print('shuffle')
 
-    for i in range(0, population_size - 1, 2):
-        if random.random(
-        ) < crossover_rate:  # check each indiv with crossover rate
-            print('========')
-            print('indiv:', i, '   chromosome:', population[i],
-                  '   crossovered: yes')
-            print('indiv:', i + 1, '   chromosome:', population[i + 1],
-                  '   crossovered: yes')
-            cross_point = random.randint(
-                0, chromesome_length - 1)  # random select the crossover point
-            parent1 = []
-            parent2 = []
+        for i in range(0, population_size - 1, 2):
+            if random.random(
+            ) < crossover_rate:  # check each indiv with crossover rate
+                print('========')
+                print('indiv:', i, '   chromosome:', population[i],
+                    '   crossovered: yes')
+                print('indiv:', i + 1, '   chromosome:', population[i + 1],
+                    '   crossovered: yes')
+                cross_point = random.randint(
+                    0, chromesome_length - 1)  # random select the crossover point
+                parent1 = []
+                parent2 = []
 
-            # for parent1, it combind with 0-cp for (i)th indiv and cp-final for (i+1)th indiv
-            parent1.extend(population[i][0:cross_point])
-            parent1.extend(population[i + 1][cross_point:chromesome_length])
+                # for parent1, it combind with 0-cp for (i)th indiv and cp-final for (i+1)th indiv
+                parent1.extend(population[i][0:cross_point])
+                parent1.extend(population[i + 1][cross_point:chromesome_length])
 
-            # for parent2, it combind with 0-cp for (i+1)th indiv and cp-final for (i)th indiv
-            parent2.extend(population[i + 1][0:cross_point])
-            parent2.extend(population[i][cross_point:chromesome_length])
-            population[i] = parent1
-            population[i + 1] = parent2
+                # for parent2, it combind with 0-cp for (i+1)th indiv and cp-final for (i)th indiv
+                parent2.extend(population[i + 1][0:cross_point])
+                parent2.extend(population[i][cross_point:chromesome_length])
+                population[i] = parent1
+                population[i + 1] = parent2
 
-            print('---after crossover---')
-            print('indiv:', i, '   chromosome:', population[i],
-                  '   crossovered: yes')
-            print('indiv:', i + 1, '   chromosome:', population[i + 1],
-                  '   crossovered: yes')
+                print('---after crossover---')
+                print('indiv:', i, '   chromosome:', population[i],
+                    '   crossovered: yes')
+                print('indiv:', i + 1, '   chromosome:', population[i + 1],
+                    '   crossovered: yes')
 
-        else:
-            # keep origin
-            population[i] = population[i]
-            population[i + 1] = population[i + 1]
-            print('========')
-            print('indiv:', i, '   chromosome:', population[i],
-                  '   crossovered: not')
-            print('indiv:', i + 1, '   chromosome:', population[i + 1],
-                  '   crossovered: not')
-    return population
+            else:
+                # keep origin
+                population[i] = population[i]
+                population[i + 1] = population[i + 1]
+                print('========')
+                print('indiv:', i, '   chromosome:', population[i],
+                    '   crossovered: not')
+                print('indiv:', i + 1, '   chromosome:', population[i + 1],
+                    '   crossovered: not')
+        return population, True
 
 
 def mutation(population: 'list', mutation_rate: '0<= float<= 1'):
