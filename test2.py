@@ -7,7 +7,7 @@ epoches = 0
 fitness = []
 flag = True
 
-while avg_fitness<9000:
+while avg_fitness<1200:
     print('======Round:',epoches,'==============')
     m_t = GA.translation(m,[2,4,7,10])
     m_f,avg_fitness = GA.evaluation(m_t)

@@ -3,7 +3,8 @@ import random
 import sys
 
 
-def initia_population(population_size: 'int>0', chromosome_length: 'int>0'):
+def initia_population(population_size: 'int>0',
+                      chromosome_length: 'int>0') -> 'list':
     '''
     Function: 
     initialize the population
@@ -28,7 +29,7 @@ def initia_population(population_size: 'int>0', chromosome_length: 'int>0'):
     return population[1:]
 
 
-def translation(population: 'list', gene_pattern: 'list'):
+def translation(population: 'list', gene_pattern: 'list') -> 'list':
     '''
     Function:
     translate the genes into decimal value
@@ -70,7 +71,7 @@ def translation(population: 'list', gene_pattern: 'list'):
     return population_trans[1:]
 
 
-def evaluation(population_tran: 'list') -> [list, float]:
+def evaluation(population_tran: 'list') -> ['list', 'float']:
     '''
     Function:
     evaluate each indiv based on the fitness function.
@@ -104,7 +105,7 @@ def evaluation(population_tran: 'list') -> [list, float]:
     return fitness_norm, avg_fitness
 
 
-def selection(population: 'list', fitness_norm: 'list'):
+def selection(population: 'list', fitness_norm: 'list') -> 'list':
     '''
     Function:
     produce the indiv to the intermediate population based on its fitness.
@@ -139,7 +140,8 @@ def selection(population: 'list', fitness_norm: 'list'):
     return population_inter[1:]
 
 
-def single_crossover(population: 'list', crossover_rate: '0<= float<= 1'):
+def single_crossover(population: 'list',
+                     crossover_rate: '0<= float<= 1') -> ['list', 'bool']:
     '''
     Function:
     do the single crossover based on the crossover rate.
@@ -156,7 +158,7 @@ def single_crossover(population: 'list', crossover_rate: '0<= float<= 1'):
     '''
     chromesome_length = len(population[0])
     population_size = len(population)
-    if population_size == 1: # check whether there is only one indiv in the population
+    if population_size == 1:  # check whether there is only one indiv in the population
         print('【Warning】only one indiv in current population')
         return population, False
     else:
@@ -170,17 +172,19 @@ def single_crossover(population: 'list', crossover_rate: '0<= float<= 1'):
             ) < crossover_rate:  # check each indiv with crossover rate
                 print('========')
                 print('indiv:', i, '   chromosome:', population[i],
-                    '   crossovered: yes')
+                      '   crossovered: yes')
                 print('indiv:', i + 1, '   chromosome:', population[i + 1],
-                    '   crossovered: yes')
+                      '   crossovered: yes')
                 cross_point = random.randint(
-                    0, chromesome_length - 1)  # random select the crossover point
+                    0,
+                    chromesome_length - 1)  # random select the crossover point
                 parent1 = []
                 parent2 = []
 
                 # for parent1, it combind with 0-cp for (i)th indiv and cp-final for (i+1)th indiv
                 parent1.extend(population[i][0:cross_point])
-                parent1.extend(population[i + 1][cross_point:chromesome_length])
+                parent1.extend(population[i +
+                                          1][cross_point:chromesome_length])
 
                 # for parent2, it combind with 0-cp for (i+1)th indiv and cp-final for (i)th indiv
                 parent2.extend(population[i + 1][0:cross_point])
@@ -190,9 +194,9 @@ def single_crossover(population: 'list', crossover_rate: '0<= float<= 1'):
 
                 print('---after crossover---')
                 print('indiv:', i, '   chromosome:', population[i],
-                    '   crossovered: yes')
+                      '   crossovered: yes')
                 print('indiv:', i + 1, '   chromosome:', population[i + 1],
-                    '   crossovered: yes')
+                      '   crossovered: yes')
 
             else:
                 # keep origin
@@ -200,13 +204,13 @@ def single_crossover(population: 'list', crossover_rate: '0<= float<= 1'):
                 population[i + 1] = population[i + 1]
                 print('========')
                 print('indiv:', i, '   chromosome:', population[i],
-                    '   crossovered: not')
+                      '   crossovered: not')
                 print('indiv:', i + 1, '   chromosome:', population[i + 1],
-                    '   crossovered: not')
+                      '   crossovered: not')
         return population, True
 
 
-def mutation(population: 'list', mutation_rate: '0<= float<= 1'):
+def mutation(population: 'list', mutation_rate: '0<= float<= 1') -> 'list':
     '''
     Function:
     do the mutation based on the mutation rate.
