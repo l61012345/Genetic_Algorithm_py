@@ -34,7 +34,7 @@ def translation(population: 'list', gene_pattern: 'list') -> 'list':
     translate the genes into decimal value
 
     Parameters:
-    population - two dimesion list, like [[0,1,0,1,0],[1,0,1,1,1],..]
+    population - two dimesion list
     gene_pattern - list, consisting the sequence number of breakpoint for each gene
                    sequence numbered as: [1,2,3,4,....]
                    i.e., gene_pattern=[2,6] will regard as: #1-#2 as a gene string, #3-#6 as another gene string
