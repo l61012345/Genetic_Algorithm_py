@@ -32,6 +32,10 @@ translation(
 |:-|:-|:-|
 |`population`| 2x list  |The population to be translated.|
 |`gene_pattern`| list | The gene pattern which contents the sequence number of breakpoints specilized to be a gene.<br>Sequence numbered as: [1,2,3,4,....]<br> i.e., gene_pattern=[2,6] will regard as: #1-#2 as a gene string, #3-#6 as another gene string.|
+|`debug_print` | bool | whether print the debug information to the screen, default=True |
+
+**Note**:
+Highly Recommend that the spaces of gene pattern should be equal to fit the schema theory. i.e., `[2,4,6,8]`
 
 | Returns | | |
 |:-|:-|:-|
@@ -43,6 +47,7 @@ Evaluate each indiv based on the sepecified fitness function.
 | Args | | |
 |:-|:-|:-|
 |`population_tran`| 2x list  |The population to be evaluated.|
+|`debug_print` | bool | whether print the debug information to the screen, default=True |
 
 **Notice**:  
 Fitness function should be written and stored as:   
@@ -78,6 +83,7 @@ selection(
 | Returns | | |
 |:-|:-|:-|
 |`population_inter` | 2x list | The list of  intermediate population. |
+|`individual_number` | int | The number of none-repetitive individuals. | 
 
 ### `single_crossover`
 Do the single crossover for paired individuls based on the crossover rate with following steps:

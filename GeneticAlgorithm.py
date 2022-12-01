@@ -28,7 +28,7 @@ def initia_population(population_size: 'int>0',
     return population[1:]
 
 
-def translation(population: 'list', gene_pattern: 'list') -> 'list':
+def translation(population: 'list', gene_pattern: 'list', debug_print = True) -> 'list':
     '''
     Function:
     translate the genes into decimal value
@@ -38,12 +38,14 @@ def translation(population: 'list', gene_pattern: 'list') -> 'list':
     gene_pattern - list, consisting the sequence number of breakpoint for each gene
                    sequence numbered as: [1,2,3,4,....]
                    i.e., gene_pattern=[2,6] will regard as: #1-#2 as a gene string, #3-#6 as another gene string
+    debug_print - bool, whether to print the result
 
     Returns:
     population_trans - list
     '''
     population_trans = [[]]
-    print('translation')
+    if debug_print == True:
+        print('translation')
     for i in range(len(population)):
         indiv_trans = []
         string = []
@@ -65,18 +67,20 @@ def translation(population: 'list', gene_pattern: 'list') -> 'list':
         for m in range(len(string)):
             gene_trans = int(string[m], 2)
             indiv_trans.append(gene_trans)
-        print('indiv:', i, '   chromosome:', indiv_trans)
+        if debug_print == True:
+            print('indiv:', i, '   chromosome:', indiv_trans)
         population_trans.append(indiv_trans)
     return population_trans[1:]
 
 
-def evaluation(population_tran: 'list') -> ['list', 'float']:
+def evaluation(population_tran: 'list', debug_print = True) -> ['list', 'float']:
     '''
     Function:
     evaluate each indiv based on the fitness function.
 
     Parameters:
     population_tran - two dimension list
+    debug_print - bool, whether to print the result
 
     Return:
     fitness_norm - list
@@ -86,16 +90,19 @@ def evaluation(population_tran: 'list') -> ['list', 'float']:
     fitness function should be written and stored as: 
     "fitness_func.py" in the same folder with this program
     '''
-    print('evaluation')
+    if debug_print == True:
+        print('evaluation')
     from fitness_func import fitness_func as fitness_func  # load */fitness_func.py
-    print('successfully load fitness function ')
+    if debug_print == True:
+        print('successfully load fitness function ')
 
     fitness = []
     fitness_norm = []
     for i in range(len(population_tran)):
         indiv_fitness = fitness_func(
             population_tran[i])  # calculate fitness function for each indiv
-        print('indiv:', i, '   fitness:', indiv_fitness)
+        if print == True:
+            print('indiv:', i, '   fitness:', indiv_fitness)
         fitness.append(indiv_fitness)  # obtain the fitness list
 
     avg_fitness = sum(fitness) / float(len(fitness))  # calculate avg fitness
@@ -103,7 +110,8 @@ def evaluation(population_tran: 'list') -> ['list', 'float']:
 
     for j in range(len(fitness)):
         indiv_fitness_norm = fitness[j] / avg_fitness  # normalized fitness
-        print('indiv:', j, '   normal fitness:', indiv_fitness_norm)
+        if debug_print == True:
+            print('indiv:', j, '   normal fitness:', indiv_fitness_norm)
         fitness_norm.append(indiv_fitness_norm)
     return fitness_norm, avg_fitness
 
@@ -119,6 +127,7 @@ def selection(population: 'list', fitness_norm: 'list') -> 'list':
 
     Return:
     population_inter - two dimension list
+    individual_number - int, number of unique indiv. in each population
     '''
     population_inter = [[]]
     print('selection')
@@ -140,7 +149,9 @@ def selection(population: 'list', fitness_norm: 'list') -> 'list':
         else:
             print('indiv:*', i, '   normal fitness:', fitness_norm[i],
                   '   No extra copy')
-    return population_inter[1:]
+        # number of unique indiv. in each population
+        individual_number = len(list(set([tuple(t) for t in population_inter[1:]])))
+    return population_inter[1:], individual_number
 
 
 def single_crossover(population: 'list',
