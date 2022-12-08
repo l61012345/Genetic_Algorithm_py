@@ -219,6 +219,15 @@ def single_crossover(population: 'list',
         return population, True
 
 
+def bit_inverse(b:'int'):
+    # if this element is 1, then change to be 0.
+    if b == 1:
+       b = 0
+    else:
+       # if this element is 0, then change to be 1.
+       b = 1
+
+
 def mutation(population: 'list', mutation_rate: '0<= float<= 1') -> 'list':
     '''
     Function:
@@ -236,28 +245,21 @@ def mutation(population: 'list', mutation_rate: '0<= float<= 1') -> 'list':
     print('mutation  mutation rate:', mutation_rate)
 
     for i in range(population_size):
-        if random.random(
-        ) < mutation_rate:  # chech each indiv with mutation rate
-            mutation_point = random.randint(
-                0, chromesome_length - 1)  # random select the mutation point
+        # chech each indiv with mutation rate
+        if random.random() < mutation_rate:  
+            # random select the mutation point
+            mutation_point = random.randint(0, chromesome_length - 1)  
             print('indiv:', i, '   chromosome:', population[i],
                   '   mutated: yes', '   mutation point:', mutation_point)
-
-            # if this element is 1, then change to be 0.
-            if population[i][mutation_point] == 1:
-                population[i][mutation_point] = 0
-            else:
-                # if this element is 0, then change to be 1.
-                population[i][mutation_point] = 1
+            bit_inverse(population[i][mutation_point])
             print('---after mutation---')
             print('indiv:', i, '   chromosome:', population[i],
                   '   mutated: yes')
-            print('========')
         else:
             population[i] = population[i]
             print('indiv:', i, '   chromosome:', population[i],
                   '   mutated: not')
-            print('========')
+        print('========')
     return population
 
 
@@ -273,9 +275,8 @@ def adaptive_single_crossover(population: 'list',
 
     Parameters:
     population - two dimension list
-    crossover_rate - 0 <= float <= 1, the rate of crossover. 
     k1 - 0 <=float<= 1, the max crossover rate when f' >= avg_fmax_fitness_inpair
-    k3 - 0 <=float<= 1, the max crossover rate when f' < avg_f
+    k3 - 0 <=float<= 1, the fixed crossover rate when f' < avg_f
 
     Return:
     population - two dimension list
@@ -290,11 +291,11 @@ def adaptive_single_crossover(population: 'list',
         print('【Warning】only one indiv in current population')
         return population, False
     # check whether k1>1
-    elif k1>1:
+    elif k1>1 or k1<0:
         print('【Warning】k1>1')
         return population, False
     # check whether k3>1
-    elif k3>1:
+    elif k3>1 or k3<0:
         print('【Warning】k3>1')
         return population, False
     else:
@@ -308,49 +309,75 @@ def adaptive_single_crossover(population: 'list',
         print('shuffle')
 
         for i in range(0, population_size - 1, 2):
+            # determine the larger fitness in a pair
             if fitness[i]>fitness[i+1]:
                 larger_fitness_inpair = fitness[i]
             else:
                 larger_fitness_inpair = fitness[i+1]
 
             if larger_fitness_inpair < avg_fitness:
-                # check each indiv with crossover rate k3
-                print('low pair')
                 pc = k3
-                if random.random() < pc:  
-                    print('==== crossover rate:', pc, '====')
-                    print('indiv:', i, '   chromosome:', population[i],'   crossovered: yes')
-                    print('indiv:', i + 1, '   chromosome:', population[i + 1],'   crossovered: yes')
-                    population[i],population[i + 1] = crossover(population[i], population[i+1])
-                    print('---after crossover---')
-                    print('indiv:', i, '   chromosome:', population[i],'   crossovered: yes')
-                    print('indiv:', i + 1, '   chromosome:', population[i + 1],'   crossovered: yes')
-                else:
-                    # keep origin
-                    population[i] = population[i]
-                    population[i + 1] = population[i + 1]
-                    print('==== crossover rate:', pc, '====')
-                    print('indiv:', i, '   chromosome:', population[i],'   crossovered: not')
-                    print('indiv:', i + 1, '   chromosome:', population[i + 1],'   crossovered: not')
+                print('low pair, crossover rate:',pc)
             else:
-                print('high pair')
-                # check each indiv with adaptive crossover rate
+                
                 pc = k1*(max_fitness - larger_fitness_inpair)/(max_fitness - avg_fitness)
-                if random.random() < pc:  
-                    print('==== crossover rate:', pc, '====')
-                    print('indiv:', i, '   chromosome:', population[i],'   crossovered: yes')
-                    print('indiv:', i + 1, '   chromosome:', population[i + 1],'   crossovered: yes')
-                    population[i],population[i + 1] = crossover(population[i], population[i+1])
-                    print('---after crossover---')
-                    print('indiv:', i, '   chromosome:', population[i],'   crossovered: yes')
-                    print('indiv:', i + 1, '   chromosome:', population[i + 1],'   crossovered: yes')
-                else:
-                    # keep origin
-                    population[i] = population[i]
-                    population[i + 1] = population[i + 1]
-                    print('==== crossover rate:', pc, '====')
-                    print('indiv:', i, '   chromosome:', population[i],'   crossovered: not')
-                    print('indiv:', i + 1, '   chromosome:', population[i + 1],'   crossovered: not')
+                print('high pair, crossover rate:',pc)
+            
+            print('==== crossover rate:', pc, '====')
+            
+            # check each indiv with adaptive crossover rate
+            if random.random() < pc:
+                print('indiv:', i, '   chromosome:', population[i],'   crossovered: yes')
+                print('indiv:', i + 1, '   chromosome:', population[i + 1],'   crossovered: yes')
+                population[i],population[i + 1] = crossover(population[i], population[i+1])
+                print('---after crossover---')
+                print('indiv:', i, '   chromosome:', population[i],'   crossovered: yes')
+                print('indiv:', i + 1, '   chromosome:', population[i + 1],'   crossovered: yes')
+            else:
+                # keep origin
+                population[i] = population[i]
+                population[i + 1] = population[i + 1]
+                print('indiv:', i, '   chromosome:', population[i],'   crossovered: not')
+                print('indiv:', i + 1, '   chromosome:', population[i + 1],'   crossovered: not')
         return population, True
 
 
+def adaptive_mutation(population: 'list',
+                      max_fitness: 'float',
+                      avg_fitness: 'float',
+                      k2=0.05,
+                      k4=0.05) -> 'list':
+    '''
+    Function:
+    do the mutation based on the mutation rate.
+
+    Parameters:
+    population - two dimension list
+    k2 - 0 <=float<= 1, the max mutation rate when f' >= avg_fmax_fitness_inpair
+    k4 - 0 <=float<= 1, the fixed mutation rate when f' < avg_f
+
+    Return:
+    population - two dimension list
+    '''
+    population_size = len(population)
+    chromesome_length = len(population[0])
+    print('adaptive mutation')
+
+    for i in range(population_size):
+        if fitness[i] < avg_fitness:
+            pm = k4
+        else:
+            pm = k2*(max_fitness - fitness[i])/(max_fitness - avg_fitness)
+        # chech each indiv with mutation rate
+        if random.random() < pm:  
+            mutation_point = random.randint(0, chromesome_length - 1)  # random select the mutation point
+            print('indiv:', i, '   chromosome:', population[i],'   mutated: yes', 
+                      '   mutation point:', mutation_point, '   muation rate:',pm)
+            bit_inverse(population[i][mutation_point])
+            print('---after mutation---')
+            print('indiv:', i, '   chromosome:', population[i],'   mutated: yes','   muation rate:',pm)
+        else:
+            population[i] = population[i]
+            print('indiv:', i, '   chromosome:', population[i],'   mutated: not','   muation rate:',pm)
+        print('========')
+    return population
